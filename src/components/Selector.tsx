@@ -39,7 +39,9 @@ const SelectStyle = styled.div`
     width: 100%;
     padding: 10px 10px 10px 0;
     font-size: 1.6rem;
+    color: #000000;
     text-align: center;
+    text-align: -webkit-center;
     border-radius: 0;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
