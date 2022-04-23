@@ -38,6 +38,7 @@ export const useGetAllWeatherData = () => {
 
           if (twoDayWeekTempsMax.length == 4) {
             // 今日と明日、１週間の天気の開始日が同じだったら
+            //　5時発表
             if (
               twoDayTimeDefines[0].slice(0, 10) ===
               weekTimeDefines[0].slice(0, 10)
@@ -47,7 +48,6 @@ export const useGetAllWeatherData = () => {
                 twoDayWeekTempsMax[3],
                 ...weekTempsMax,
               ];
-
               delete weekTempsMax1[3];
 
               weekWeatherCodes1 = [
@@ -59,21 +59,27 @@ export const useGetAllWeatherData = () => {
               delete weekWeatherCodes1[3];
 
               weekTimeDefines1 = [...weekTimeDefines];
+              //　11時発表
             } else {
-              weekTempsMax1 = [twoDayWeekTempsMax[0], ...weekTempsMax];
-              weekWeatherCodes1 = [twoDayWeatherCodes[0], ...weekWeatherCodes];
+              weekTempsMax1 = [
+                twoDayWeekTempsMax[0],
+                twoDayWeekTempsMax[3],
+                ...weekTempsMax,
+              ];
+
+              weekWeatherCodes1 = [
+                twoDayWeatherCodes[0],
+                twoDayWeatherCodes[1],
+                ...weekWeatherCodes,
+              ];
+              delete weekWeatherCodes1[2];
               weekTimeDefines1 = [twoDayTimeDefines[0], ...weekTimeDefines];
             }
+            // 17時発表
           } else {
             weekTempsMax1 = ['-', twoDayWeekTempsMax[1], ...weekTempsMax];
-            weekWeatherCodes1 = [
-              twoDay.timeSeries[0].areas[0].weatherCodes[0],
-              ...weekWeatherCodes,
-            ];
-            weekTimeDefines1 = [
-              twoDay.timeSeries[0].timeDefines[0],
-              ...weekTimeDefines,
-            ];
+            weekWeatherCodes1 = [twoDayWeatherCodes[0], ...weekWeatherCodes];
+            weekTimeDefines1 = [twoDayTimeDefines[0], ...weekTimeDefines];
           }
           //　不要な値を削除
           weekTempsMax1 = weekTempsMax1.filter(function (s) {
