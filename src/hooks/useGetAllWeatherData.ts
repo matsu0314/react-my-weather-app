@@ -26,32 +26,60 @@ export const useGetAllWeatherData = () => {
           // １週間の天気
           const week = WehatherArea.week;
 
-          const reportDateTime = WehatherArea.reportDateTime;
+          const reportDateTime = twoDay.reportDatetime;
           const areaName = WehatherArea.name;
           const officeCode = WehatherArea.officeCode;
-          const twoDayTimeDefines = twoDay.timeSeries[1].timeDefines;
+          const twoDayTimeDefines = twoDay.timeSeries[2].timeDefines;
           const twoDayWeatherCodes = twoDay.timeSeries[0].areas.weatherCodes;
           const twoDayWeekTempsMax = twoDay.timeSeries[2].areas.temps;
           const weekTimeDefines = week.timeSeries[0].timeDefines;
           const weekWeatherCodes = week.timeSeries[0].areas.weatherCodes;
           const weekTempsMax = week.timeSeries[1].areas.tempsMax;
 
-          // 取得できるデータによって今日か明日の天気を取得
-          if (twoDayWeekTempsMax[3]) {
-            weekTempsMax1 = [
-              twoDayWeekTempsMax[0],
-              // twoDayWeekTempsMax[3],
-              ...weekTempsMax,
-            ];
-            weekWeatherCodes1 = weekWeatherCodes;
-            weekTimeDefines1 = weekTimeDefines;
+          if (twoDayWeekTempsMax.length == 4) {
+            // 今日と明日、１週間の天気の開始日が同じだったら
+            if (
+              twoDayTimeDefines[0].slice(0, 10) ===
+              weekTimeDefines[0].slice(0, 10)
+            ) {
+              weekTempsMax1 = [
+                twoDayWeekTempsMax[0],
+                twoDayWeekTempsMax[3],
+                ...weekTempsMax,
+              ];
+
+              delete weekTempsMax1[3];
+
+              weekWeatherCodes1 = [
+                twoDayWeatherCodes[0],
+                twoDayWeatherCodes[1],
+                ...weekWeatherCodes,
+              ];
+              delete weekWeatherCodes1[2];
+              delete weekWeatherCodes1[3];
+
+              weekTimeDefines1 = [...weekTimeDefines];
+            } else {
+              weekTempsMax1 = [twoDayWeekTempsMax[0], ...weekTempsMax];
+              weekWeatherCodes1 = [twoDayWeatherCodes[0], ...weekWeatherCodes];
+              weekTimeDefines1 = [twoDayTimeDefines[0], ...weekTimeDefines];
+            }
           } else {
             weekTempsMax1 = ['-', twoDayWeekTempsMax[1], ...weekTempsMax];
-            weekWeatherCodes1 = [twoDayWeatherCodes[0], ...weekWeatherCodes];
-            weekTimeDefines1 = [twoDayTimeDefines[0], ...weekTimeDefines];
+            weekWeatherCodes1 = [
+              twoDay.timeSeries[0].areas[0].weatherCodes[0],
+              ...weekWeatherCodes,
+            ];
+            weekTimeDefines1 = [
+              twoDay.timeSeries[0].timeDefines[0],
+              ...weekTimeDefines,
+            ];
           }
           //　不要な値を削除
           weekTempsMax1 = weekTempsMax1.filter(function (s) {
+            return s !== '';
+          });
+          weekWeatherCodes1 = weekWeatherCodes1.filter(function (s) {
             return s !== '';
           });
 

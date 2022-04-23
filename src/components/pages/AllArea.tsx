@@ -105,7 +105,7 @@ export const AllArea: React.FC<AllArea> = (props) => {
                         />
                       ) : (
                         <img
-                          src={createIcon(WehatherArea.weekWeatherCodes[2])}
+                          src={createIcon(WehatherArea.weekWeatherCodes[1])}
                         />
                       )}
                     </p>
