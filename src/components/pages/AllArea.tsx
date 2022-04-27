@@ -9,15 +9,17 @@ import japanMap from '../../assets/images/japan-map.png';
 import { WeatherDataType } from '../../types';
 import { selectAreaType } from '../../types';
 
+type DayType = 'today' | 'tommorow' | null;
+
 type AllArea = {
   allWeatherData: Array<WeatherDataType>;
   selectArea: selectAreaType;
-  // dayType: 'today' | 'tommorow' | null;
+  dayType: DayType;
 };
 
 export const AllArea: React.FC<AllArea> = (props) => {
   const { allWeatherData, selectArea } = props;
-  const [targetDate, setTargetDate] = useState('today');
+  const [targetDate, setTargetDate] = useState<DayType>('today');
 
   const { weatherCode } = useGetApiData();
 
