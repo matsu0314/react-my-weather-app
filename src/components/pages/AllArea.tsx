@@ -9,15 +9,16 @@ import japanMap from '../../assets/images/japan-map.png';
 import { WeatherDataType } from '../../types';
 import { selectAreaType } from '../../types';
 
+type DayType = 'today' | 'tomorrow' | null;
+
 type AllArea = {
   allWeatherData: Array<WeatherDataType>;
   selectArea: selectAreaType;
-  // dayType: 'today' | 'tommorow' | null;
 };
 
 export const AllArea: React.FC<AllArea> = (props) => {
   const { allWeatherData, selectArea } = props;
-  const [targetDate, setTargetDate] = useState('today');
+  const [targetDate, setTargetDate] = useState<DayType>('today');
 
   const { weatherCode } = useGetApiData();
 
@@ -54,8 +55,8 @@ export const AllArea: React.FC<AllArea> = (props) => {
   const onChangeDate = (e: { target: { value: SetStateAction<string> } }) => {
     if (allWeatherData[0] && e.target.value == 'today') {
       setTargetDate('today');
-    } else if (allWeatherData[0] && e.target.value == 'tommorow') {
-      setTargetDate('tommorow');
+    } else if (allWeatherData[0] && e.target.value == 'tomorrow') {
+      setTargetDate('tomorrow');
     } else {
       return null;
     }
@@ -76,8 +77,8 @@ export const AllArea: React.FC<AllArea> = (props) => {
             </ChangeDateButton>
             <ChangeDateButton
               onClick={onChangeDate}
-              value={'tommorow'}
-              elementClassName={targetDate == 'tommorow' && 'active'}
+              value={'tomorrow'}
+              elementClassName={targetDate == 'tomorrow' && 'active'}
             >
               明日
             </ChangeDateButton>
