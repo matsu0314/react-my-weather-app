@@ -1,11 +1,12 @@
 //　気象庁のAPIから地域別のデータを取得
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AreaContext } from '../providers/AreaProvider';
 import axios from 'axios';
 import { WeatherDataType } from '../types';
 
 export const useGetWeatherData = () => {
   const [loading, setLoading] = useState(false);
-  const [targetAreaCode, setTargetAreaCode] = useState('130000');
+  // const [targetAreaCode, setTargetAreaCode] = useState('130000');
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     reportDateTime: '',
     areaName: '',
@@ -17,7 +18,13 @@ export const useGetWeatherData = () => {
     weekTempsMax: [],
   });
 
+  const context = useContext<any>(AreaContext);
+  const { targetAreaCode, setTargetAreaCode } = context;
+
   useEffect(() => {
+    // targetAreaCodeの値が無ければデータ取得しない
+    if (targetAreaCode === undefined) return;
+
     console.log('地域別のデータを取得します');
     setLoading(true);
     axios
@@ -121,5 +128,6 @@ export const useGetWeatherData = () => {
     setLoading(false);
   }, [targetAreaCode]);
 
-  return { weatherData, targetAreaCode, setTargetAreaCode, loading };
+  // return { weatherData, targetAreaCode, setTargetAreaCode, loading };
+  return { weatherData, loading };
 };
