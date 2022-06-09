@@ -27,7 +27,7 @@ export const Selector: React.FC<SelectorType> = memo(
       <SelectStyle>
         <select
           onChange={(e) => setTargetAreaCode(e.target.value)}
-          defaultValue={targetAreaCode}
+          value={targetAreaCode}
         >
           {selectArea.map((area, index) => {
             return (

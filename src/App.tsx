@@ -9,8 +9,6 @@ import { useGetAllWeatherData } from './hooks/useGetAllWeatherData';
 import './assets/css/fonts/general.css';
 import './App.css';
 
-import { Loading } from './components/Loading';
-
 const App: React.FC = () => {
   console.log('APPをレンダリングします');
   // 全国の外部データ取得
