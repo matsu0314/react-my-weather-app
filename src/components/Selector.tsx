@@ -1,22 +1,22 @@
+import React, { useEffect, useContext, memo } from 'react';
 import { selectAreaType } from '../types';
+import { AreaContext } from '../providers/AreaProvider';
+
 import styled from 'styled-components';
 
 type SelectorType = {
   selectArea: selectAreaType;
-  targetAreaCode: string;
-  setTargetAreaCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const Selector: React.FC<SelectorType> = ({
-  selectArea,
-  targetAreaCode,
-  setTargetAreaCode,
-}) => {
+export const Selector: React.FC<SelectorType> = memo(({ selectArea }) => {
+  const context = useContext<any>(AreaContext);
+  const { targetAreaCode, setTargetAreaCode } = context;
+
   return (
     <SelectStyle>
       <select
         onChange={(e) => setTargetAreaCode(e.target.value)}
-        defaultValue={targetAreaCode}
+        value={targetAreaCode}
       >
         {selectArea.map((area, index) => {
           return (
@@ -28,7 +28,7 @@ export const Selector: React.FC<SelectorType> = ({
       </select>
     </SelectStyle>
   );
-};
+});
 
 const SelectStyle = styled.div`
   position: relative;

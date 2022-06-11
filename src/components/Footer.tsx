@@ -16,7 +16,7 @@ export const Footer = () => {
             </a>
           </div>
         </FlexStyle>
-        <CopyrightStyle>© 2022 今日の天気</CopyrightStyle>
+        <CopyrightStyle>© 2022 今日の天気 for donguri</CopyrightStyle>
       </div>
     </FooterStyle>
   );
