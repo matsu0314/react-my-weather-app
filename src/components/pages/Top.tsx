@@ -9,46 +9,48 @@ import { useGetApiData } from '../../hooks/useGetApiData';
 
 import styled from 'styled-components';
 
-// import { WeatherDataType } from '../../types';
-// import { selectAreaType } from '../../types';
-
-type TopType = {
-  // weatherData: WeatherDataType;
-  // selectArea: selectAreaType;
-  // targetAreaCode: string;
-  // loading: boolean;
-  // setTargetAreaCode: React.Dispatch<React.SetStateAction<string>>;
+type AreaContextType = {
+  targetAreaCode: string;
+  setTargetAreaCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-// ローカルストレージの値を取得
-const localArea = JSON.parse(localStorage.getItem('area-data'));
-
-export const Top: React.FC<TopType> = () => {
+export const Top = () => {
   console.log('Topをレンダリングします');
   const areaCheck = useRef(null);
   const { selectArea } = useGetApiData();
   const { weatherData, loading } = useGetWeatherData();
-  const context = useContext<any>(AreaContext);
+  const context = useContext<AreaContextType>(AreaContext);
   const { targetAreaCode, setTargetAreaCode } = context;
   const [checkFlag, setCheckFlag] = useState(false);
+  const [localDisplayArea, setLocalDisplayArea] = useState(targetAreaCode);
 
-  // 保存したエリア名（表示用）
-  const localDisplayArea = selectArea.filter(
-    (weathreCode) => weathreCode[0] === targetAreaCode
-  )[0][1].name;
+  // コードからエリアネームを返す
+  const myAreaSet = (areaCode): string => {
+    return selectArea.filter((weathreCode) => weathreCode[0] === areaCode)[0][1]
+      .name;
+  };
+
+  // ローカルストレージの値を取得
+  const localArea = JSON.parse(localStorage.getItem('area-data'));
 
   // 読み込みどき、ローカルストレージの値をチェック
   useEffect(() => {
+    console.log('useEffect');
     if (localArea === null) return;
+    // チェックボックスをオン
     const areaCheckElm = areaCheck.current;
     areaCheckElm.checked = true;
+
+    // エリアコードをローカルストレージの値でセット
     setTargetAreaCode(localArea.areaCode);
+    // チェックボックスのflag更新
     setCheckFlag(true);
-    console.log('LocalAreaをセット：' + localArea.areaCode);
+    // 保存したエリア名（表示用）セット
+    setLocalDisplayArea(myAreaSet(localArea.areaCode));
   }, []);
 
-  // チェックボックスをクリックしたら、エリアコードをローカルストレージに保存する
-  const onClickSaveArea = (e: any) => {
+  // チェックボックスをオンにしたら、エリアコードをローカルストレージに保存する
+  const onClickSaveArea = (e) => {
     const target = e.target;
     if (target.checked) {
       const areaLocal = {
@@ -60,15 +62,21 @@ export const Top: React.FC<TopType> = () => {
       localStorage.setItem('area-data', json);
       // チェックボックスのflag更新
       setCheckFlag(true);
+      setTargetAreaCode(targetAreaCode);
+
+      // 保存したエリア名（表示用）
+      setLocalDisplayArea(myAreaSet(targetAreaCode));
       alert(
-        `「${localDisplayArea}」をブラウザに保存します。\n次回アクセスした時、このエリアが表示されます。`
+        `マイエリア「${myAreaSet(
+          targetAreaCode
+        )}」をブラウザに保存します。\n次回アクセスした時、このエリアが表示されます。`
       );
     } else {
       //データ削除
       localStorage.removeItem('area-data');
       // チェックボックスのflag更新
       setCheckFlag(false);
-      alert(`「${localDisplayArea}」をブラウザから削除しました。`);
+      alert(`マイエリア「${localDisplayArea}」をブラウザから削除しました。`);
     }
   };
 
@@ -76,11 +84,7 @@ export const Top: React.FC<TopType> = () => {
     <DefaultLayout>
       <div className="container">
         <Title elementClassName={'top'}>エリア別の天気</Title>
-        <Selector
-          // setTargetAreaCode={setTargetAreaCode}
-          // targetAreaCode={targetAreaCode}
-          selectArea={selectArea}
-        />
+        <Selector selectArea={selectArea} />
         <CheckAreaStyle>
           <CheckBoxStyle
             type="checkbox"
@@ -90,9 +94,9 @@ export const Top: React.FC<TopType> = () => {
           />
           <LabelStyle htmlFor="ChSwitch"></LabelStyle>
           {checkFlag ? (
-            <CheckTextStyle>save{localDisplayArea}</CheckTextStyle>
+            <CheckTextStyle>my area:{localDisplayArea}</CheckTextStyle>
           ) : (
-            <CheckTextStyle>エリアを保存</CheckTextStyle>
+            <CheckTextStyle>マイエリアを保存</CheckTextStyle>
           )}
         </CheckAreaStyle>
 

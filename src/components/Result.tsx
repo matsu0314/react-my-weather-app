@@ -72,7 +72,7 @@ export const Result: React.FC<ResultsWeatherDataType> = ({
 const FlexStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
-  cleat: both;
+  clear: both;
 `;
 const PublicationStyle = styled.p`
   text-align: right;
