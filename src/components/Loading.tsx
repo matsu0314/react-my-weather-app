@@ -33,16 +33,17 @@ const LoadingStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  clear: both;
+  transform: translateY(10vh);
   }
 `;
 const AnimationStyle = styled.p`
 font-family: 'Secular One', sans-serif;
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
   .letter {
     display: inline-block;
-
+      color: #7bbdbd;
       animation-name: kf-animation;
       animation-duration: 0.8s;
       animation-iteration-count: infinite;

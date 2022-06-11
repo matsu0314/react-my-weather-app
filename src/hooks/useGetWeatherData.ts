@@ -123,9 +123,9 @@ export const useGetWeatherData = () => {
           weekWeatherCodes: weekWeatherCodes1,
           weekTempsMax: weekTempsMax1,
         });
+        setLoading(false);
       })
       .catch((err) => alert('データがうまく取得できませんでした'));
-    setLoading(false);
   }, [targetAreaCode]);
 
   // return { weatherData, targetAreaCode, setTargetAreaCode, loading };

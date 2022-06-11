@@ -100,9 +100,7 @@ export const Top = () => {
           )}
         </CheckAreaStyle>
 
-        {weatherData.reportDateTime == '' ? (
-          <p>地域を選択してください</p>
-        ) : (
+        {weatherData.reportDateTime == '' || (
           <Result weatherData={weatherData} loading={loading} />
         )}
       </div>
